@@ -18,7 +18,7 @@ Le contrat SmartBet est déployé sur le réseau de test Sepolia à l'adresse su
 0xcEb776FE3a018Cd9155BC4F675d84FF9b91De726
 ```
 
-Disponible sur etherscan : [https://explorer.sepolia.io/address/0xcEb776FE3a018Cd9155BC4F675d84FF9b91De726](https://explorer.sepolia.io/address/0xcEb776FE3a018Cd9155BC4F675d84FF9b91De726)
+Disponible sur etherscan : [https://sepolia.etherscan.io/address/0xcEb776FE3a018Cd9155BC4F675d84FF9b91De726](https://sepolia.etherscan.io/address/0xcEb776FE3a018Cd9155BC4F675d84FF9b91De726)
 
 ## Comment Commencer 🏁
 
