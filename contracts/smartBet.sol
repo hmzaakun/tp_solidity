@@ -32,6 +32,7 @@ contract SmartBet {
     event UserRegistered(address user, string pseudo);
     event BetPlaced(address user, uint matchId, uint predictedScoreHome, uint predictedScoreAway);
     event WinnersPaid(uint matchId);
+    event MatchAdded(uint matchId, uint date);
 
     modifier onlyAdmin() {
         require(msg.sender == admin, "Only admin can call this.");
@@ -68,6 +69,7 @@ contract SmartBet {
         require(matches[_matchId].date == 0, "Match already exists.");
         matches[_matchId] = Match(_date, 0, 0, false);
         matchIds.push(_matchId);
+        emit MatchAdded(_matchId, _date);
     }
 
     function setMatchResult(uint _matchId, uint _scoreHome, uint _scoreAway) external onlyAdmin {
@@ -80,19 +82,17 @@ contract SmartBet {
 
     function determineWinners(uint _matchId) private {
         uint countWinners = 0;
-        // Première boucle pour compter le nombre total de gagnants
         for (uint i = 0; i < matchBets[_matchId].length; i++) {
             if (matchBets[_matchId][i].predictedScoreHome == matches[_matchId].scoreHome &&
                 matchBets[_matchId][i].predictedScoreAway == matches[_matchId].scoreAway) {
                 countWinners++;
             }
         }
-        // Calculer le montant du partage selon le nombre de gagnants (max 5)
+
         uint effectiveWinners = countWinners > 5 ? 5 : countWinners;
         if (countWinners > 0) {
             uint winnerShare = totalPool / effectiveWinners;
             uint winnersPaid = 0;
-            // Seconde boucle pour payer uniquement les 5 premiers gagnants
             for (uint i = 0; i < matchBets[_matchId].length && winnersPaid < effectiveWinners; i++) {
                 if (matchBets[_matchId][i].predictedScoreHome == matches[_matchId].scoreHome &&
                     matchBets[_matchId][i].predictedScoreAway == matches[_matchId].scoreAway) {
@@ -100,9 +100,8 @@ contract SmartBet {
                     winnersPaid++;
                 }
             }
-            totalPool -= winnerShare * winnersPaid; // Mettre à jour le totalPool après distribution
+            totalPool -= winnerShare * winnersPaid;
             emit WinnersPaid(_matchId);
         }
     }
-
 }
